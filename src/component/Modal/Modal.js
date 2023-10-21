@@ -5,6 +5,7 @@ import { deleteContactDetails } from "../../store/slice/contactSlice";
 export default function Modal({ open, onClose,data, children }) {
 const dispatch = useDispatch();
 const {contact_list} = useSelector((state)=>state.app);
+
   function handleDelete(){
     console.log("Modal ID",data)
     console.log(contact_list)
