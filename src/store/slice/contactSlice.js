@@ -70,6 +70,27 @@ try{
 }
 });
 
+// For Deleting contact details of single user from API - AsyncThunk is used For API
+export const deleteContactDetails = createAsyncThunk("deleteContactDetails", async (data,{isRejectedWithValue}) => {
+  // here we will fetching the API
+  const response = await fetch(
+    `https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts/${data.id}`,
+    {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }
+  );
+
+try{
+  const result = await response.json();
+  return result;
+}catch(error){
+
+  return isRejectedWithValue(error);;
+}
+});
+
 export const contactSlice = createSlice({
   name: "contactList",
   initialState: INIT_STATE,
@@ -108,6 +129,18 @@ export const contactSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+      .addCase(deleteContactDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteContactDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        //deleting logic
+        console.log("reducer",action.payload)
+      })
+      .addCase(deleteContactDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
       
   },
 });
