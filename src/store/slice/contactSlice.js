@@ -50,9 +50,16 @@ export const getContactList = createAsyncThunk("getContactList", async (args,{is
 });
 
 // For updaing contact details of single user from API - AsyncThunk is used For API
-export const updateContactDetails = createAsyncThunk("updateContactDetails", async (args,{isRejectedWithValue}) => {
+export const updateContactDetails = createAsyncThunk("updateContactDetails", async (data,{isRejectedWithValue}) => {
   // here we will fetching the API
-const response = await fetch("https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts");
+  const response = await fetch(
+    `https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts/${data.id}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }
+  );
 
 try{
   const result = await response.json();
@@ -90,7 +97,18 @@ export const contactSlice = createSlice({
       .addCase(getContactList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      }).addCase(updateContactDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateContactDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.contact_list = state.contact_list.map((details)=>details.id == action.payload.id ? action.payload : details)
+      })
+      .addCase(updateContactDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      
   },
 });
 

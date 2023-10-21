@@ -1,37 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createContact } from "../../store/slice/contactSlice";
+import { updateContactDetails, getContactList } from "../../store/slice/contactSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function UpdateContact() {
-  const [user, setUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
  // get id from url
   const {id} = useParams();
-
   const {contact_list} = useSelector((state)=>state.app);
-  console.log("-->",user);
 
   useEffect(()=>{
-    setUser(contact_list)
-  },[user])
+    if(id){
+      dispatch(getContactList());
+      const user = contact_list.filter((person)=>person.id == id)
+      setCurrentUser(user[0])
+      console.log("current user",currentUser);
+    }
+  },[]);
 
 
-  function getUserDetails(event) {
-    setUser({ ...user, [event.target.name]: event.target.value });
-  }
+  
+function updateUserDetails(event){
+  setCurrentUser({...currentUser,[event.target.name]:event.target.value})
+  console.log("pudate new value",currentUser)
+}
 
-  function handleSubmit(event) {
-    // it wiil stop the default behvaious on button
-    event.preventDefault();
-    //use dipatch here...
-    dispatch(createContact(user));
-    navigate("/");
 
-  }
-
+function handleSubmit(event){
+  event.preventDefault();
+ dispatch(updateContactDetails(currentUser));
+ navigate("/");
+}
+ 
 
 
   return (
@@ -58,7 +61,8 @@ export default function UpdateContact() {
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
                 placeholder="ex : Saanvi"
                 name="name"
-                onChange={getUserDetails}
+                onChange={updateUserDetails}
+                value={currentUser?.name}
               />
             </div>
             <div>
@@ -74,7 +78,8 @@ export default function UpdateContact() {
                 className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
                 placeholder="999xxxx123"
                 name="phone"
-                onChange={getUserDetails}
+                onChange={updateUserDetails}
+                value={currentUser?.phone}
               />
             </div>
             <div>
@@ -90,7 +95,8 @@ export default function UpdateContact() {
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
                 placeholder="saanvi@uidev.com"
                 name="email"
-                onChange={getUserDetails}
+                onChange={updateUserDetails}
+                value={currentUser?.email}
               />
             </div>
 
