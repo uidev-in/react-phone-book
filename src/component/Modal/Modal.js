@@ -1,22 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteContactDetails } from "../../store/slice/contactSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Modal({ open, onClose,data, children }) {
+  const [hideModal] = useState(false)
 const dispatch = useDispatch();
+const navigate = useNavigate();
 const {contact_list} = useSelector((state)=>state.app);
 
-  function handleDelete(){
-    console.log("Modal ID",data)
-    console.log(contact_list)
+  function handleDelete(event){
     dispatch(deleteContactDetails(data));
+    onClose(hideModal)
   }
   return (
     <>
       {/* backdrop (Grey screen) */}
       <div
         onClick={onClose}
-        className={`fixed inset-0 flex justify-center items-center transition-colors ${
+        className={`fixed inset-0  flex justify-center items-center transition-colors ${
           open ? "visible bg-black/20" : "invisible"
         }`}
       >
@@ -29,7 +31,7 @@ const {contact_list} = useSelector((state)=>state.app);
           {/* {children} */}
           <div className="text-center w-80 mb-5]">
               <h3 className="text-2xl font-semibold text-gray-700 pb-5">Confirm Delete</h3>
-              <p className="text-md text-gray-700 pb-5">Are you sure you want to delete this item?</p>
+              <p className="text-md text-gray-700 pb-5">Are you sure you want to delete  this item?</p>
             </div>
             <div className="flex gap-4 pt-3">
               <button className="w-full text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2" onClick={handleDelete}>Delete</button>

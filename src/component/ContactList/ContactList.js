@@ -66,7 +66,7 @@ export default function ContactList() {
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
                     <button type="button" className="bg-black text-white rounded-sm p-2" onClick={()=>navigate(`/edit/${item.id}`)}>Edit</button> 
-                    <button type="button" className="bg-red-600 text-white rounded-sm p-2" onClick={()=>handleDelete(item.id)}>Delete</button>
+                    <button type="button" className="bg-red-600 text-white rounded-sm p-2 " onClick={()=>handleDelete(item.id)}>Delete</button>
                     </div>
                   </td>
                 </tr>

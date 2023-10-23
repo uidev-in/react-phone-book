@@ -4,8 +4,8 @@ import { updateContactDetails, getContactList } from "../../store/slice/contactS
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function UpdateContact() {
-  const [currentUser, setCurrentUser] = useState(null);
   const dispatch = useDispatch();
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate()
 
  // get id from url
