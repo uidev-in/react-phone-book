@@ -18,7 +18,7 @@ const {contact_list} = useSelector((state)=>state.app);
       {/* backdrop (Grey screen) */}
       <div
         onClick={onClose}
-        className={`fixed inset-0  flex justify-center items-center transition-colors ${
+        className={`fixed inset-0  flex justify-center items-center transition-colors z-10 ${
           open ? "visible bg-black/20" : "invisible"
         }`}
       >
