@@ -17,7 +17,7 @@ export const createContact = createAsyncThunk(
   async (data,{isRejectedWithValue}) => {
     //we are fetching Api to POST the detail
     const response = await fetch(
-      "https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts",
+      "https://653686dbbb226bb85dd244f8.mockapi.io/contacts",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,7 +38,7 @@ export const createContact = createAsyncThunk(
 
 export const getContactList = createAsyncThunk("getContactList", async (args,{isRejectedWithValue}) => {
     // here we will fetching the API
-  const response = await fetch("https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts");
+  const response = await fetch("https://653686dbbb226bb85dd244f8.mockapi.io/contacts");
 
   try{
     const result = await response.json();
@@ -53,7 +53,7 @@ export const getContactList = createAsyncThunk("getContactList", async (args,{is
 export const updateContactDetails = createAsyncThunk("updateContactDetails", async (data,{isRejectedWithValue}) => {
   // here we will fetching the API
   const response = await fetch(
-    `https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts/${data.id}`,
+    `https://653686dbbb226bb85dd244f8.mockapi.io/contacts/${data.id}`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ try{
 export const deleteContactDetails = createAsyncThunk("deleteContactDetails", async (id,{isRejectedWithValue}) => {
   // here we will fetching the API
   const response = await fetch(
-    `https://6532092d4d4c2e3f333d82f5.mockapi.io/contacts/${id}`,
+    `https://653686dbbb226bb85dd244f8.mockapi.io/contacts/${id}`,
     {
       method: "DELETE",
       
