@@ -133,7 +133,9 @@ export const contactSlice = createSlice({
       })
       .addCase(deleteContactDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.contact_list = state.contact_list.map((item)=>item.id !== action.payload.id)
+       if(action.payload.id){
+        state.contact_list = state.contact_list.filter((item)=>item.id !== action.payload.id)
+       }
         
       })
       .addCase(deleteContactDetails.rejected, (state, action) => {

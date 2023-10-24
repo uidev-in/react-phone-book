@@ -1,18 +1,23 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { deleteContactDetails } from "../../store/slice/contactSlice";
-import { useNavigate } from "react-router-dom";
 
-export default function Modal({ open, onClose,data, children }) {
-  const [hideModal] = useState(false)
+export default function Modal({ open, onClose,userId, children , confirmAction}) {
 const dispatch = useDispatch();
-const navigate = useNavigate();
-const {contact_list} = useSelector((state)=>state.app);
 
-  function handleDelete(event){
-    dispatch(deleteContactDetails(data));
-    onClose(hideModal)
-  }
+ 
+
+  const handleDelete = () => {
+    // Dispatch the action to delete the contact with the provided userId.
+    dispatch(deleteContactDetails(userId));
+    // Call the provided confirmAction function (if available).
+    if (confirmAction) {
+      confirmAction(); // Execute the confirmAction callback
+    }
+    // Close the modal.
+    onClose();
+  };
+
   return (
     <>
       {/* backdrop (Grey screen) */}
