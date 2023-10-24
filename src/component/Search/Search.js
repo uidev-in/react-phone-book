@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchUser } from "../../store/slice/contactSlice";
 
 export default function Search() {
+
+const [searchData,setSearchData]= useState("");
+const dispatch = useDispatch();
+
+function handleSearch(event){
+  setSearchData(event.target.value.toLowerCase());
+  dispatch(searchUser(searchData));
+  console.log("Handle Search Data --->",searchData)
+
+}
+
+useEffect(()=>{
+},[searchData])
+
   return (
     <>
       <div className="relative">
@@ -25,6 +41,7 @@ export default function Search() {
           type="search"
           className="block w-[420px] p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
           placeholder="Search Contact..."
+          onChange={handleSearch}
         />
       </div>
     </>

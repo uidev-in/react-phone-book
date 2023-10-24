@@ -8,7 +8,7 @@ export default function ContactList() {
   const dispatch = useDispatch();
   const [contactIdToDelete, setContactIdToDelete] = useState(null);
   const [isModalOpen,setIsModalOpen] = useState(false);
-  const { contact_list, isLoading } = useSelector((state) => state.app);
+  const { contact_list, isLoading,searchData } = useSelector((state) => state.app);
   const navigate = useNavigate();
 
    // console.log("ID Alert",id)
@@ -66,7 +66,14 @@ export default function ContactList() {
               </tr>
             </thead>
             <tbody>
-              {contact_list?.map((item, index) => (
+            {contact_list.filter((user)=>{
+              if(searchData.length ===0){
+                return user;
+              }
+              else {
+                return user.name.toLowerCase().includes(searchData);
+              }
+            })?.map((item, index) => (
                 <tr key={item.id} className="bg-white border-b">
                   <th
                     scope="row"
@@ -84,6 +91,25 @@ export default function ContactList() {
                   </td>
                 </tr>
               ))}
+              {/* <h1>Deafult--------------------></h1>
+              {contact_list?.map((item, index) => (
+                <tr key={item.id} className="bg-white border-b">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                  >
+                    {item.name}
+                  </th>
+                  <td className="px-6 py-4">{item.phone}</td>
+                  <td className="px-6 py-4">{item.email}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                    <button type="button" className="bg-black text-white rounded-sm p-2" onClick={()=>navigate(`/edit/${item.id}`)}>Edit</button> 
+                    <button type="button" className="bg-red-600 text-white rounded-sm p-2 " onClick={()=>openDeleteModal(item.id)}>Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              ))} */}
             </tbody>
           </table>
           <Modal open={isModalOpen} onClose={closeDeleteModal} userId={contactIdToDelete} confirmAction={handleConfirmDelete} />

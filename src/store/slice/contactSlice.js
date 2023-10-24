@@ -8,6 +8,7 @@ const INIT_STATE = {
   contact_list: [],
   isLoading: false,
   error: null,
+  searchData : ""
 };
 
 // For creating new contact -> AsynThunk is used for API
@@ -86,14 +87,18 @@ try{
   return result;
 }catch(error){
 
-  return isRejectedWithValue(error);;
+  return isRejectedWithValue(error);
 }
 });
 
 export const contactSlice = createSlice({
   name: "contactList",
   initialState: INIT_STATE,
-  reducers: {},
+  reducers: {
+    searchUser : (state,action)=>{
+      state.searchData = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createContact.pending, (state) => {
@@ -145,5 +150,5 @@ export const contactSlice = createSlice({
       
   },
 });
-
 export default contactSlice.reducer;
+export const {searchUser} = contactSlice.actions;
