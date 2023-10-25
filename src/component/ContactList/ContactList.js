@@ -7,23 +7,21 @@ import Modal from "../Modal/Modal";
 export default function ContactList() {
   const dispatch = useDispatch();
   const [contactIdToDelete, setContactIdToDelete] = useState(null);
-  const [isModalOpen,setIsModalOpen] = useState(false);
-  const { contact_list, isLoading,searchData } = useSelector((state) => state.app);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { contact_list, isLoading, searchData } = useSelector(
+    (state) => state.app
+  );
   const navigate = useNavigate();
 
-   // console.log("ID Alert",id)
-   useEffect(() => {
+  // console.log("ID Alert",id)
+  useEffect(() => {
     dispatch(getContactList());
   }, []);
 
-
-
-  
   // This is an example of a confirm action that gets executed after the user confirms the deletion.
   const handleConfirmDelete = () => {
     // Perform additional actions here, such as updating the UI or displaying a success message.
-    console.log('Contact with ID deleted successfully.',contactIdToDelete);
-
+    console.log("Contact with ID deleted successfully.", contactIdToDelete);
   };
 
   // Function to open the modal for deleting a contact
@@ -38,11 +36,17 @@ export default function ContactList() {
     setContactIdToDelete(null);
   };
 
- 
+function getInitialLetter(name){
+ const firstChar = name.split("");
+ return firstChar[0];
+}
+
 
   if (isLoading) {
-   return <h1>Loading....</h1>;
+    return <h1>Loading....</h1>;
   }
+
+
 
   return (
     <>
@@ -66,31 +70,58 @@ export default function ContactList() {
               </tr>
             </thead>
             <tbody>
-            {contact_list.filter((user)=>{
-              if(searchData.length ===0){
-                return user;
-              }
-              else {
-                return user.name.toLowerCase().includes(searchData);
-              }
-            })?.map((item, index) => (
-                <tr key={item.id} className="bg-white border-b">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
-                  >
-                    {item.name}
-                  </th>
-                  <td className="px-6 py-4">{item.phone}</td>
-                  <td className="px-6 py-4">{item.email}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                    <button type="button" className="bg-black text-white rounded-sm p-2" onClick={()=>navigate(`/edit/${item.id}`)}>Edit</button> 
-                    <button type="button" className="bg-red-600 text-white rounded-sm p-2 " onClick={()=>openDeleteModal(item.id)}>Delete</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {contact_list
+                .filter((user) => {
+                  if (searchData.length === 0) {
+                    return user;
+                  } else {
+                    return user.name.toLowerCase().includes(searchData);
+                  }
+                })
+                ?.map((item, index) => (
+                  <tr key={item.id} className="bg-white border-b">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap h-full flex justify-start place-items-center gap-2"
+                    >
+                      <div
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          background: "#1d4ed8",
+                          fontSize: "16px",
+                          color:"#fff",
+                          textAlign:"center",
+                          lineHeight:"40px"
+                        }}
+                      >
+                        {getInitialLetter(item.name)}
+                      </div>
+                      <div>{item.name}</div>
+                    </th>
+                    <td className="px-6 py-4">{item.phone}</td>
+                    <td className="px-6 py-4">{item.email}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className="bg-black text-white rounded-sm p-2"
+                          onClick={() => navigate(`/edit/${item.id}`)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="bg-red-600 text-white rounded-sm p-2 "
+                          onClick={() => openDeleteModal(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               {/* <h1>Deafult--------------------></h1>
               {contact_list?.map((item, index) => (
                 <tr key={item.id} className="bg-white border-b">
@@ -112,8 +143,12 @@ export default function ContactList() {
               ))} */}
             </tbody>
           </table>
-          <Modal open={isModalOpen} onClose={closeDeleteModal} userId={contactIdToDelete} confirmAction={handleConfirmDelete} />
-          
+          <Modal
+            open={isModalOpen}
+            onClose={closeDeleteModal}
+            userId={contactIdToDelete}
+            confirmAction={handleConfirmDelete}
+          />
         </div>
       </div>
     </>
