@@ -3,19 +3,17 @@ import { useDispatch } from "react-redux";
 import { searchUser } from "../../store/slice/contactSlice";
 
 export default function Search() {
+  const dispatch = useDispatch();
+  const [searchData, setSearchData] = useState("");
 
-const [searchData,setSearchData]= useState("");
-const dispatch = useDispatch();
+  function handleSearch(event) {
+    const inputValue = event.target.value.toLowerCase();
+    setSearchData(inputValue);
+  }
 
-function handleSearch(event){
-  setSearchData(event.target.value.toLowerCase());
-  dispatch(searchUser(searchData));
-  console.log("Handle Search Data --->",searchData)
-
-}
-
-useEffect(()=>{
-},[searchData])
+  useEffect(()=>{
+    dispatch(searchUser(searchData));
+  },[searchData])
 
   return (
     <>
